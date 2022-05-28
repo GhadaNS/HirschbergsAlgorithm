@@ -103,8 +103,8 @@ def __init__(self, g, m, d):
     self.ww = []
     self.zz = []
 ```
-**Methods:**
-- Compare (x, y): used in the creation of “f” and in the back-tracing of the “f” elements origins, it compares x and y and returns m (reward) if match and d (penalty) if mismatch.
+### Methods:
+- **Compare (x, y):** used in the creation of “f” and in the back-tracing of the “f” elements origins, it compares x and y and returns m (reward) if match and d (penalty) if mismatch.
 ```python
 def compare(self, x, y):  # Compares sequence elements x and y to determine the match/difference score
         if x == y:
@@ -112,7 +112,7 @@ def compare(self, x, y):  # Compares sequence elements x and y to determine the 
         else:
             return self.d
 ```
--	F (a, b): creates the score matrix “f” of sequences “a” and “b”. The matrix is created by initializing the first line and column by multiplying their indices in the gap penalty (as moving right or down would result in a gap), then the rest of the matrix is filled using the Bellman's principle of optimality (calculating the step that results in the best score; moving diagonally means a match “m” or a mismatch “d”, moving right or down means a gap “g”).
+-	**F (a, b):** creates the score matrix “f” of sequences “a” and “b”. The matrix is created by initializing the first line and column by multiplying their indices in the gap penalty (as moving right or down would result in a gap), then the rest of the matrix is filled using the Bellman's principle of optimality (calculating the step that results in the best score; moving diagonally means a match “m” or a mismatch “d”, moving right or down means a gap “g”).
 ```python
 def F(self, a, b):  # Creates & returns the score matrix f
         r = len(a)  # number of rows
@@ -128,8 +128,8 @@ def F(self, a, b):  # Creates & returns the score matrix f
                               f[i - 1][j - 1] + self.compare(a[i - 1], b[j - 1]))
         return f
 ```
--	EnumerateAlignments / EnumerateAlignments_lines (x, y, f, w, z): both are recursive methods that return a list of all possible alignments “ww” and “zz” of the “x” and “y” sequences. The slight difference between the two is that the first aligns two strings and the second aligns two lists of strings.
-     - EnumerateAlignments (x, y, f, w, z): starts from the most right cell in the “f” matrix to the top most left cell, it back-traces from which previous cell was the current score cell derived (instead of making a tracing graph while creating “f” that will require space), and whenever a trace-back condition is fulfilled (the origin of the score in “f” is determined) the characters that correspond are concatenated to the sequences “w” and “z” (either a char or a “-”), and then sliced from the original strings; which are again fed back to the method, and so on till reaching the base case where both original strings become empty, then the resulting sequences are appended to the list of alignments. Since the origin of a score cell in “f” might be more than one, the recursion works on getting all possible alignments, because by the end of each case it goes back to the last step of recursion and checks for further matches and if a condition is fulfilled the whole process starts again.
+-	**EnumerateAlignments / EnumerateAlignments_lines (x, y, f, w, z):** both are recursive methods that return a list of all possible alignments “ww” and “zz” of the “x” and “y” sequences. The slight difference between the two is that the first aligns two strings and the second aligns two lists of strings.
+     - **EnumerateAlignments (x, y, f, w, z):** starts from the most right cell in the “f” matrix to the top most left cell, it back-traces from which previous cell was the current score cell derived (instead of making a tracing graph while creating “f” that will require space), and whenever a trace-back condition is fulfilled (the origin of the score in “f” is determined) the characters that correspond are concatenated to the sequences “w” and “z” (either a char or a “-”), and then sliced from the original strings; which are again fed back to the method, and so on till reaching the base case where both original strings become empty, then the resulting sequences are appended to the list of alignments. Since the origin of a score cell in “f” might be more than one, the recursion works on getting all possible alignments, because by the end of each case it goes back to the last step of recursion and checks for further matches and if a condition is fulfilled the whole process starts again.
          ```python
          def EnumerateAlignments(self, x, y, f, w, z):  # Gets a list of all alignments when x, y are strings
              i = len(x)
@@ -145,7 +145,7 @@ def F(self, a, b):  # Creates & returns the score matrix f
                  self.EnumerateAlignments(x, y[0:j - 1], f, "-" + w, y[j - 1] + z)
              return self.ww, self.zz
          ```
-     - EnumerateAlignments_lines (x, y, f, w, z): works exactly like the first method but since the “w” and “z” are lists, it appends the strings that fulfill the condition to those lists (instead of simply concatenating them as characters).
+     - **EnumerateAlignments_lines (x, y, f, w, z):** works exactly like the first method but since the “w” and “z” are lists, it appends the strings that fulfill the condition to those lists (instead of simply concatenating them as characters).
      
          ```python
          def EnumerateAlignments_lines(self, x, y, f, w, z):  # Gets a list of all alignments when x, y are string lists
@@ -177,7 +177,7 @@ class hb:
  self.t = t
 ```
 
-**Methods:**
+### Methods:
 
 - **Compare (x, y):** used in the creation of the score matrix’ rows, it compares x and y and returns  m (reward) if match and d (penalty) if mismatch. 
 ```python
@@ -205,92 +205,92 @@ def ComputeAlignmentScore(self, x, y):
 - **Hirschberg / Hirschberg_lines (x, y):** both are recursive methods that return a list of all  possible alignments “WW” and “ZZ” of the “x” and “y” sequences. The difference between  the two is that the first aligns two strings and the second aligns two lists of strings. 
 
 
-- **Hirschberg (x, y):** the idea is to cut the 1st sequence “x” on half, and compute the  Alignment score of its 1st half with “y” in “Sl” which is the last row of their score matrix, and the Alignment score of its reversed 2nd half with reversed “y” in “Sr”, after which we  reverse again to get the first row of the original sequences’score matrix, which are exactly  successive in the whole matrix. After that we add those two score rows together, extract  from the resulting row the indices of the maximum value and keep them in the list J, that  will decide how the second sequence “y” will be sliced. 
+   - **Hirschberg (x, y):** the idea is to cut the 1st sequence “x” on half, and compute the  Alignment score of its 1st half with “y” in “Sl” which is the last row of their score matrix, and the Alignment score of its reversed 2nd half with reversed “y” in “Sr”, after which we  reverse again to get the first row of the original sequences’score matrix, which are exactly  successive in the whole matrix. After that we add those two score rows together, extract  from the resulting row the indices of the maximum value and keep them in the list J, that  will decide how the second sequence “y” will be sliced. 
 For all possible j positions, we slice “y” and send it back to the Hirschberg method with the  already sliced in half “x”. Just like this the recursion will go on, till one of the sequences is  empty where it’s aligned easily with a “-”, or one of the sequences’ lengths reach 1, where  the alignment is affected using the Needleman-Wunsch method with a vector of: 1 x len(y),  or: len(x) x 1, which is space also optimizing. 
 For each step the 1st halves will get us the aligned left part, and the 2nd halves will get us  the aligned right part, then these will be concatenated with all possibilities (each possible  left alignment is concatenated with all possible right alignments). 
 
 
 
-```python
-    def Hirschberg(self, x, y):  # when the sequences are characters
-        if len(x) == 0:  # If x is empty, y is aligned with "-"
-            WW = ['-' * len(y)]
-            ZZ = [y]
-        elif len(y) == 0:  # If y is empty, x is aligned with "-"
-            WW = [x]
-            ZZ = ['-' * len(x)]
-        elif len(x) == 1 or len(
-                y) == 1:  # If one of their lengths is 1, Needleman does the job with a matrix: 1 x len(y), or: len(x) x 1
-            align_nmw = nmw.nmw(self.g, self.m, self.d)
-            f = align_nmw.F(x, y)
-            z = ""
-            w = ""
-            WW, ZZ = align_nmw.EnumerateAlignments(x, y, f, w, z)
-        else:
-            i = len(x) // 2
-            Sl = self.ComputeAlignmentScore(x[0:i], y)  # Computing the AS of the first half of x with y
-            Sr = self.ComputeAlignmentScore(x[i:len(x)][::-1], y[::-1])  # Computing the AS of the reversed second half of x with  reversed y
-            # Due to the Reversion we get exactly the last line of the first half and the first line of the second half
-            S = [k + t for k, t in zip(Sl, Sr[::-1])]  # Sum of the Sl and reversed Sr
-            m = max(S)  # Maximum value of S to find where to slice y for the next alignment
-            J = [i for i, j in enumerate(S) if j == m]  # Getting the indices of the m occurrence in S
-            WW = []
-            ZZ = []
-            for j in J:  # To slice y with all possible solutions
-                if self.t:
-                    print(i, ",", j)
-                WWl, ZZl = self.Hirschberg(x[0:i], y[0:j])
-                WWr, ZZr = self.Hirschberg(x[i:len(x)], y[j:len(y)])
-                for z, c in zip(WWl, ZZl):  # Just to make all possible permutations of the outcome
-                    for k, e in zip(WWr, ZZr):
-                        WW.append(z + k)
-                        ZZ.append(c + e)
-        return WW, ZZ
-```
+     ```python
+         def Hirschberg(self, x, y):  # when the sequences are characters
+             if len(x) == 0:  # If x is empty, y is aligned with "-"
+                 WW = ['-' * len(y)]
+                 ZZ = [y]
+             elif len(y) == 0:  # If y is empty, x is aligned with "-"
+                 WW = [x]
+                 ZZ = ['-' * len(x)]
+             elif len(x) == 1 or len(
+                     y) == 1:  # If one of their lengths is 1, Needleman does the job with a matrix: 1 x len(y), or: len(x) x 1
+                 align_nmw = nmw.nmw(self.g, self.m, self.d)
+                 f = align_nmw.F(x, y)
+                 z = ""
+                 w = ""
+                 WW, ZZ = align_nmw.EnumerateAlignments(x, y, f, w, z)
+             else:
+                 i = len(x) // 2
+                 Sl = self.ComputeAlignmentScore(x[0:i], y)  # Computing the AS of the first half of x with y
+                 Sr = self.ComputeAlignmentScore(x[i:len(x)][::-1], y[::-1])  # Computing the AS of the reversed second half of x with  reversed y
+                 # Due to the Reversion we get exactly the last line of the first half and the first line of the second half
+                 S = [k + t for k, t in zip(Sl, Sr[::-1])]  # Sum of the Sl and reversed Sr
+                 m = max(S)  # Maximum value of S to find where to slice y for the next alignment
+                 J = [i for i, j in enumerate(S) if j == m]  # Getting the indices of the m occurrence in S
+                 WW = []
+                 ZZ = []
+                 for j in J:  # To slice y with all possible solutions
+                     if self.t:
+                         print(i, ",", j)
+                     WWl, ZZl = self.Hirschberg(x[0:i], y[0:j])
+                     WWr, ZZr = self.Hirschberg(x[i:len(x)], y[j:len(y)])
+                     for z, c in zip(WWl, ZZl):  # Just to make all possible permutations of the outcome
+                         for k, e in zip(WWr, ZZr):
+                             WW.append(z + k)
+                             ZZ.append(c + e)
+             return WW, ZZ
+     ```
 
 
--**Hirschberg_lines (x, y):** works exactly like the first method but “x, y, z, w” should be  dealt with as lists and not strings. 
+   - **Hirschberg_lines (x, y):** works exactly like the first method but “x, y, z, w” should be  dealt with as lists and not strings. 
 
 
 
-```python
-def Hirschberg_lines(self, x, y):  # when sequences are lines, same as first one but some changes to deal with it as a list
-        if len(x) == 0:  # If x is empty, y is aligned with "-"
-            print("x", x)
-            WW = ['-' * len([y])]
-            ZZ = [y]
-        elif len(y) == 0:  # If y is empty, x is aligned with "-"
-            print("y", y)
-            WW = [x]
-            ZZ = ['-' * len([x])]
-        elif len([x]) == 1 or len([y]) == 1:  # If one of their lengths is 1, Needleman does the job with a matrix: 1 x len(y), or: len(x) x 1
-            align_nmw = nmw.nmw(self.g, self.m, self.d)
-            f = align_nmw.F(x, y)
-            z = []
-            w = []
-            WW, ZZ = align_nmw.EnumerateAlignments_lines(x, y, f, w, z)
-        else:
-            i = len(x) // 2
-            Sl = self.ComputeAlignmentScore(x[0:i], y)  # Computing the AS of the first half of x with y
-            Sr = self.ComputeAlignmentScore(x[i:len(x)][::-1], y[::-1])  # Computing the AS of the reversed second half of x with  reversed y
-            # Due to the Reversion we get exactly the last line of the first half and the first line of the second half
-            S = [k + t for k, t in zip(Sl, Sr[::-1])]  # Sum of the Sl and reversed Sr
-            m = max(S)  # Maximum value of S to find where to slice y for the next alignment
-            J = [i for i, j in enumerate(S) if j == m]  # Getting all the indices of the m occurrence in S
-            WW = []
-            ZZ = []
-            for j in J:  # To slice y with all possible solutions
-                if self.t:
-                    print(i, ",", j)
-                WWl, ZZl = self.Hirschberg_lines(x[0:i], y[0:j])  # left part
-                WWr, ZZr = self.Hirschberg_lines(x[i:len(x)], y[j:len(y)])  # right part
-                print(WWl, WWr, "\n", ZZl, ZZr)
-                for z, c in zip(WWl, ZZl):  # Just to make all possible permutations of the outcome
-                    for k, e in zip(WWr, ZZr):
-                        WW.append([z].extend([k]))  # extend instead of simple concatenation
-                        ZZ.append([c].extend([e]))
-        return WW, ZZ
-```
+     ```python
+     def Hirschberg_lines(self, x, y):  # when sequences are lines, same as first one but some changes to deal with it as a list
+             if len(x) == 0:  # If x is empty, y is aligned with "-"
+                 print("x", x)
+                 WW = ['-' * len([y])]
+                 ZZ = [y]
+             elif len(y) == 0:  # If y is empty, x is aligned with "-"
+                 print("y", y)
+                 WW = [x]
+                 ZZ = ['-' * len([x])]
+             elif len([x]) == 1 or len([y]) == 1:  # If one of their lengths is 1, Needleman does the job with a matrix: 1 x len(y), or: len(x) x 1
+                 align_nmw = nmw.nmw(self.g, self.m, self.d)
+                 f = align_nmw.F(x, y)
+                 z = []
+                 w = []
+                 WW, ZZ = align_nmw.EnumerateAlignments_lines(x, y, f, w, z)
+             else:
+                 i = len(x) // 2
+                 Sl = self.ComputeAlignmentScore(x[0:i], y)  # Computing the AS of the first half of x with y
+                 Sr = self.ComputeAlignmentScore(x[i:len(x)][::-1], y[::-1])  # Computing the AS of the reversed second half of x with  reversed y
+                 # Due to the Reversion we get exactly the last line of the first half and the first line of the second half
+                 S = [k + t for k, t in zip(Sl, Sr[::-1])]  # Sum of the Sl and reversed Sr
+                 m = max(S)  # Maximum value of S to find where to slice y for the next alignment
+                 J = [i for i, j in enumerate(S) if j == m]  # Getting all the indices of the m occurrence in S
+                 WW = []
+                 ZZ = []
+                 for j in J:  # To slice y with all possible solutions
+                     if self.t:
+                         print(i, ",", j)
+                     WWl, ZZl = self.Hirschberg_lines(x[0:i], y[0:j])  # left part
+                     WWr, ZZr = self.Hirschberg_lines(x[i:len(x)], y[j:len(y)])  # right part
+                     print(WWl, WWr, "\n", ZZl, ZZr)
+                     for z, c in zip(WWl, ZZl):  # Just to make all possible permutations of the outcome
+                         for k, e in zip(WWr, ZZr):
+                             WW.append([z].extend([k]))  # extend instead of simple concatenation
+                             ZZ.append([c].extend([e]))
+             return WW, ZZ
+     ```
    
  
 
