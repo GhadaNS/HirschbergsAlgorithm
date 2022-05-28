@@ -130,38 +130,38 @@ def F(self, a, b):  # Creates & returns the score matrix f
 ```
 -	EnumerateAlignments / EnumerateAlignments_lines (x, y, f, w, z): both are recursive methods that return a list of all possible alignments “ww” and “zz” of the “x” and “y” sequences. The slight difference between the two is that the first aligns two strings and the second aligns two lists of strings.
      - EnumerateAlignments (x, y, f, w, z): starts from the most right cell in the “f” matrix to the top most left cell, it back-traces from which previous cell was the current score cell derived (instead of making a tracing graph while creating “f” that will require space), and whenever a trace-back condition is fulfilled (the origin of the score in “f” is determined) the characters that correspond are concatenated to the sequences “w” and “z” (either a char or a “-”), and then sliced from the original strings; which are again fed back to the method, and so on till reaching the base case where both original strings become empty, then the resulting sequences are appended to the list of alignments. Since the origin of a score cell in “f” might be more than one, the recursion works on getting all possible alignments, because by the end of each case it goes back to the last step of recursion and checks for further matches and if a condition is fulfilled the whole process starts again.
-```python
-def EnumerateAlignments(self, x, y, f, w, z):  # Gets a list of all alignments when x, y are strings
-    i = len(x)
-    j = len(y)
-    if i == j == 0:  # The base case that ends the recursion
-        self.ww.append(w)
-        self.zz.append(z)
-    if i > 0 and j > 0 and f[i][j] == f[i - 1][j - 1] + self.compare(x[i - 1], y[j - 1]):  # Diagonal result
-        self.EnumerateAlignments(x[0:i - 1], y[0:j - 1], f, x[i - 1] + w, y[j - 1] + z)
-    if i > 0 and f[i][j] == f[i - 1][j] + self.g:  # Top result
-        self.EnumerateAlignments(x[0:i - 1], y, f, x[i - 1] + w, "-" + z)
-    if j > 0 and f[i][j] == f[i][j - 1] + self.g:  # Left result
-        self.EnumerateAlignments(x, y[0:j - 1], f, "-" + w, y[j - 1] + z)
-    return self.ww, self.zz
-```
+         ```python
+         def EnumerateAlignments(self, x, y, f, w, z):  # Gets a list of all alignments when x, y are strings
+             i = len(x)
+             j = len(y)
+             if i == j == 0:  # The base case that ends the recursion
+                 self.ww.append(w)
+                 self.zz.append(z)
+             if i > 0 and j > 0 and f[i][j] == f[i - 1][j - 1] + self.compare(x[i - 1], y[j - 1]):  # Diagonal result
+                 self.EnumerateAlignments(x[0:i - 1], y[0:j - 1], f, x[i - 1] + w, y[j - 1] + z)
+             if i > 0 and f[i][j] == f[i - 1][j] + self.g:  # Top result
+                 self.EnumerateAlignments(x[0:i - 1], y, f, x[i - 1] + w, "-" + z)
+             if j > 0 and f[i][j] == f[i][j - 1] + self.g:  # Left result
+                 self.EnumerateAlignments(x, y[0:j - 1], f, "-" + w, y[j - 1] + z)
+             return self.ww, self.zz
+         ```
      - EnumerateAlignments_lines (x, y, f, w, z): works exactly like the first method but since the “w” and “z” are lists, it appends the strings that fulfill the condition to those lists (instead of simply concatenating them as characters).
      
-```python
-def EnumerateAlignments_lines(self, x, y, f, w, z):  # Gets a list of all alignments when x, y are string lists
-    i = len(x)
-    j = len(y)
-    if i == j == 0:  # The base case that ends the recursion
-        self.ww.append(w)
-        self.zz.append(z)
-    if i > 0 and j > 0 and f[i][j] == f[i - 1][j - 1] + self.compare(x[i - 1], y[j - 1]):  # Diagonal result
-        self.EnumerateAlignments_lines(x[0:i - 1], y[0:j - 1], f, [x[i - 1]] + w, [y[j - 1]] + z)
-    if i > 0 and f[i][j] == f[i - 1][j] + self.g:  # Top result
-        self.EnumerateAlignments_lines(x[0:i - 1], y, f, [x[i - 1]] + w, ["-"] + z)
-    if j > 0 and f[i][j] == f[i][j - 1] + self.g:   # Left result
-        self.EnumerateAlignments_lines(x, y[0:j - 1], f, ["-"] + w, [y[j - 1]] + z)
-    return self.ww, self.zz
-```
+         ```python
+         def EnumerateAlignments_lines(self, x, y, f, w, z):  # Gets a list of all alignments when x, y are string lists
+             i = len(x)
+             j = len(y)
+             if i == j == 0:  # The base case that ends the recursion
+                 self.ww.append(w)
+                 self.zz.append(z)
+             if i > 0 and j > 0 and f[i][j] == f[i - 1][j - 1] + self.compare(x[i - 1], y[j - 1]):  # Diagonal result
+                 self.EnumerateAlignments_lines(x[0:i - 1], y[0:j - 1], f, [x[i - 1]] + w, [y[j - 1]] + z)
+             if i > 0 and f[i][j] == f[i - 1][j] + self.g:  # Top result
+                 self.EnumerateAlignments_lines(x[0:i - 1], y, f, [x[i - 1]] + w, ["-"] + z)
+             if j > 0 and f[i][j] == f[i][j - 1] + self.g:   # Left result
+                 self.EnumerateAlignments_lines(x, y[0:j - 1], f, ["-"] + w, [y[j - 1]] + z)
+             return self.ww, self.zz
+         ```
 Actually, the purpose of implementing the Needleman Wunsch algorithm though we’re working on the Hirschberg algorithm, is that it is one of base cases of the Hirschberg recursive algorithm.
    
  
