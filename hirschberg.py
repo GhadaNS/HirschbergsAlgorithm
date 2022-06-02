@@ -94,3 +94,19 @@ else:  # A & B arguments are already strings
     for w, z in alignments:
         print(w)
         print(z)
+
+# To save the Result
+Save = input('Do you want to save the result [Y/N]? ')
+if Save == 'Y' or Save == 'y':
+    with open('Result.txt', 'w') as R:
+        if f and l:
+            for w, z in zip(ww, zz):
+                for i, j in zip(w, z):
+                    if i == j:
+                        R.write("=" + i + "\n=" + j + "\n")
+                    else:
+                        print("<", i, "\n>", j)
+                        R.write("<" + i + "\n>" + j + "\n")
+        else:
+            for w, z in alignments:
+                R.write(w + '\n' + z + '\n')
