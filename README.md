@@ -291,7 +291,11 @@ For each step the 1st halves will get us the aligned left part, and the 2nd halv
                              ZZ.append([c].extend([e]))
              return WW, ZZ
      ```
-   
+## References:
+
+- Hirschberg, D. S. 1975. “A Linear Space Algorithm for Computing Maximal Common Subsequences.” Communications of the ACM 18 (6): 341–43. https://doi.org/10.1145/360825.360861.
+
+- Needleman, Saul B., and Christian D. Wunsch. 1970. “A General Method Applicable to the Search for Similarities in the Amino Acid Sequence of Two Proteins.” Journal of Molecular Biology 48 (3): 443–53. https://doi.org/10.1016/0022-2836(70)90057-4.
  
 
 
